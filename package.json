@@ -6,9 +6,12 @@
     "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
-    "elysia": "latest"
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "socket.io": "^4.7.4"
   },
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "bun-types": "latest"
   },
   "module": "src/index.js"

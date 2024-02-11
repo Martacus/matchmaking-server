@@ -1,7 +1,7 @@
 import User from "./User";
 
 export default class Match {
-  private id: String;
+  private id: string;
   private users: User[] = [];
   public readonly maxUsers: number;
 
@@ -18,5 +18,13 @@ export default class Match {
 
   userAmount() {
     return this.users.length;
+  }
+
+  getId(){
+    return this.id;
+  }
+
+  getUsers(){
+    return this.users;
   }
 }

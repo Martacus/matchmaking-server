@@ -1,9 +1,12 @@
 export default class User {
-  name: String;
-  discordName: String;
+  id!: string;
+  name: string;
+  discordName: string;
+  socketId: string;
 
-  constructor(name: String, discordName: String) {
+  constructor(name: string, discordName: string, socketId: string) {
     this.name = name;
     this.discordName = discordName;
+    this.socketId = socketId;
   }
 }

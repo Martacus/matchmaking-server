@@ -1,11 +1,10 @@
 import User from '../../User';
 
-export default class FinalsRequest extends User {
-  id!: String;
-  rank: String;
+export default class FinalsRequest extends User { 
+  rank: string;
 
-  constructor(name: String, rank: String, discordName: String) {
-    super(name, discordName);
-    this.rank = rank;
+  constructor(name: string, rank: string, discordName: string, socketId: string) {
+    super(name, discordName, socketId);
+    this.rank = rank; 
   }
 }
