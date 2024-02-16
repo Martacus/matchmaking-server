@@ -26,8 +26,7 @@ export default class GamePool {
 
   findOpenMatch(): Match {
     let foundMatch: Match | undefined;
-    this.matches.forEach((match) => {
-      console.log('lookin for match: ' + match.userAmount())
+    this.matches.forEach((match) => { 
       if (match.userAmount() < match.maxUsers) {
         foundMatch = match;
         return;
@@ -35,8 +34,7 @@ export default class GamePool {
     });
 
     if(!foundMatch){
-      foundMatch = new Match(3)
-      foundMatch.addUser(new FinalsRequest('test_name', 'bronze', 'test_disc_name', 'test_client_id'));
+      foundMatch = new Match(3);
       this.matches.push(foundMatch);
     }
     
