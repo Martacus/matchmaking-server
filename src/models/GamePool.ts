@@ -4,12 +4,12 @@ import FinalsRequest from './game/thefinals/FinalsRequest';
 
 export default class GamePool {
   public id: String;
-  public rank: String;
+  public name: String;
   public ranked: boolean; 
   public matches: Match[] = [];
 
-  constructor(rank: String, ranked: boolean) {
-    this.rank = rank;
+  constructor(name: String, ranked: boolean) {
+    this.name = name;
     this.ranked = ranked;
     this.id = crypto.randomUUID();
   }

@@ -1,10 +1,11 @@
 import GamePool from './GamePool';
+import FinalsRequest from './game/thefinals/FinalsRequest';
 
 export default class PoolManager {
-  public game: String;
+  public game: string;
   private pools: GamePool[] = [];
 
-  constructor(game: String) {
+  constructor(game: string) {
     this.game = game;
   }
 
@@ -12,7 +13,11 @@ export default class PoolManager {
     this.pools.push(pool);
   }
 
-  getPool(poolType: String): GamePool | undefined {
-    return this.pools.find((pool) => pool.rank === poolType);
+  getPool(matchRequest: FinalsRequest): GamePool | undefined {
+    const poolName = matchRequest.ranked ? matchRequest.rank : `${matchRequest.rank}_${matchRequest.gamemode}`;
+
+    return this.pools.find(pool => 
+      pool.name === poolName && pool.ranked === matchRequest.ranked
+    );
   }
 }
