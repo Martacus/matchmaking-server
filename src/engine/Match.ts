@@ -29,4 +29,8 @@ export default class Match {
   getUsers() {
     return this.users;
   }
+
+  removeUser(user: User) {
+    this.users = this.users.filter((filterUser) => filterUser !== user);
+  }
 }
