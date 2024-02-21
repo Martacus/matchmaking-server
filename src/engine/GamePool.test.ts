@@ -32,16 +32,14 @@ test('addUser adds a user to an existing match that is not full', () => {
 
 test('addUser creates a new match if existing matches are full', () => {
   const gamePool = new GamePool('Test Pool', true);
-  const user1 = new User('test_name', 'test_discord_name', 'test_socket_id');  
-  const user2 = new User('test_name_2', 'test_discord_name_2', 'test_socket_id_2');   
-  const user3 = new User('test_name_3', 'test_discord_name_3', 'test_socket_id_3');  
+  const user = new User('test_name', 'test_discord_name', 'test_socket_id'); 
 
-  gamePool.addUser(user1);
-  gamePool.addUser(user2);
-  gamePool.addUser(user3);
+  gamePool.addUser(user);
+  gamePool.addUser(user);
+  gamePool.addUser(user);
 
-  const newMatch = gamePool.addUser(user3);
+  const newMatch = gamePool.addUser(user);
 
   expect(gamePool.matches.length).toBe(2); 
-  expect(newMatch.getUsers().includes(user3)).toBe(true); 
+  expect(newMatch.getUsers().includes(user)).toBe(true); 
 });
