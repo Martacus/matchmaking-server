@@ -1,4 +1,4 @@
-import User from "../models/User";
+import User from '../models/User';
 
 export default class Match {
   private id: string;
@@ -12,7 +12,7 @@ export default class Match {
 
   addUser(user: User): boolean {
     if (this.users.length >= this.maxUsers) {
-      return false; 
+      return false;
     }
     this.users.push(user);
     return true;
@@ -22,11 +22,11 @@ export default class Match {
     return this.users.length;
   }
 
-  getId(){
+  getId() {
     return this.id;
   }
 
-  getUsers(){
+  getUsers() {
     return this.users;
   }
 }

@@ -3,7 +3,7 @@ import FinalsRequest from './models/game/thefinals/FinalsRequest';
 import GamePool from './engine/GamePool';
 import { Server, Socket } from 'socket.io';
 
-import express from "express";
+import express from 'express';
 import { createServer } from 'node:http';
 
 const ranks = ['bronze', 'silver', 'gold', 'platinum', 'diamond', 'all'];
@@ -11,15 +11,15 @@ const gamemodes = ['quick_cash', 'bank_it', 'tournament'];
 
 const PORT = process.env.PORT || 3000;
 const app = express();
-app.use(express.json())
+app.use(express.json());
 
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: '*',
   },
   pingInterval: 10000,
-  pingTimeout: 5000
+  pingTimeout: 5000,
 });
 
 let managers: PoolManager[] = [];
@@ -43,10 +43,9 @@ io.on('connection', (socket) => {
     console.log('Message received from client:', data.message);
   });
 
-  socket.on("disconnect", (reason) => {
+  socket.on('disconnect', (reason) => {
     console.log(reason);
   });
-
 });
 
 function createFinalsRankedPools() {
@@ -66,16 +65,17 @@ function handleFinalsRequest(matchRequest: FinalsRequest, socket: Socket) {
   if (pool) {
     let match = pool.addUser(matchRequest);
     console.log('user added to: ' + pool.id);
-    console.log('emitting to: ' + matchRequest.socketId + ' with: ', match.getId());
+    console.log(
+      'emitting to: ' + matchRequest.socketId + ' with: ',
+      match.getId(),
+    );
 
-    match.getUsers().forEach(user => {
+    match.getUsers().forEach((user) => {
       if (user.socketId !== socket.id) {
         socket.broadcast.emit(user.socketId, match);
       } else {
         socket.emit(user.socketId, match);
       }
-
     });
   }
 }
-

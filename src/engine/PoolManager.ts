@@ -14,10 +14,12 @@ export default class PoolManager {
   }
 
   getPool(matchRequest: FinalsRequest): GamePool | undefined {
-    const poolName = matchRequest.ranked ? matchRequest.rank : `${matchRequest.rank}_${matchRequest.gamemode}`;
+    const poolName = matchRequest.ranked
+      ? matchRequest.rank
+      : `${matchRequest.rank}_${matchRequest.gamemode}`;
 
-    return this.pools.find(pool => 
-      pool.name === poolName && pool.ranked === matchRequest.ranked
+    return this.pools.find(
+      (pool) => pool.name === poolName && pool.ranked === matchRequest.ranked,
     );
   }
 }

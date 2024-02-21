@@ -4,7 +4,7 @@ import User from '../models/User';
 export default class GamePool {
   public id: string;
   public name: string;
-  public ranked: boolean; 
+  public ranked: boolean;
   public matches: Match[] = [];
 
   constructor(name: string, ranked: boolean) {
@@ -13,21 +13,22 @@ export default class GamePool {
     this.id = crypto.randomUUID();
   }
 
-  addUser(user: User): Match {  
+  addUser(user: User): Match {
     let match = this.findOpenMatch();
     match.addUser(user);
     return match;
   }
 
   findOpenMatch(): Match {
-    let foundMatch = this.matches.find(match => match.userAmount() < match.maxUsers);
+    let foundMatch = this.matches.find(
+      (match) => match.userAmount() < match.maxUsers,
+    );
 
-    if(!foundMatch){
+    if (!foundMatch) {
       foundMatch = new Match(3);
       this.matches.push(foundMatch);
     }
-    
+
     return foundMatch;
   }
-
 }
