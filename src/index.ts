@@ -51,15 +51,22 @@ io.on('connection', (socket) => {
     if (!pool) {
       console.log(`Pool for user ${user.name} not found.`);
       return;
-    }
+    } 
 
     const match = pool.removeUser(user);
     if (!match) {
       console.log(`Failed to remove user ${user.name} from match.`);
       return;
     }
+
+    console.log(`User ${socket.id} removed from match in pool ${pool.name}.`); 
+
+    if(match.userAmount() === 0){
+      pool.removeMatch(match);
+      console.log(`Match empty, removed match in pool ${pool.name}.`);
+      return;
+    }
     
-    console.log(`User ${user.name} removed from match in pool ${pool.name}.`);
     broadCastMatchToPlayers(match, socket);
   });
 });
@@ -80,11 +87,7 @@ function handleFinalsRequest(matchRequest: FinalsRequest, socket: Socket) {
   const pool = managers[0].getPool(matchRequest);
   if (pool) {
     let match = pool.addUser(matchRequest);
-    console.log('user added to: ' + pool.id);
-    console.log(
-      'emitting to: ' + matchRequest.socketId + ' with: ',
-      match.getId(),
-    );
+    console.log(`User ${socket.id} added to: ` + pool.id); 
 
     broadCastMatchToPlayers(match, socket);
     if(match.userAmount() >= match.maxUsers){

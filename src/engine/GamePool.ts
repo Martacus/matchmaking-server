@@ -43,10 +43,10 @@ export default class GamePool {
 
   removeUser(user: User): Match | undefined {
     const match = this.matches.find((match) => match.getUsers().includes(user));
-    this.users = this.users.filter((user) => user !== user);
+    this.users = this.users.filter((filterUser) => filterUser.socketId !== user.socketId);
     if(match){
       match.removeUser(user);
       return match;
-    }
+    } 
   }
 }
