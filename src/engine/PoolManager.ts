@@ -1,5 +1,5 @@
 import GamePool from './GamePool';
-import FinalsRequest from './game/thefinals/FinalsRequest';
+import FinalsRequest from '../models/game/thefinals/FinalsRequest';
 
 export default class PoolManager {
   public game: string;

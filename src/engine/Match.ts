@@ -1,4 +1,4 @@
-import User from "./User";
+import User from "../models/User";
 
 export default class Match {
   private id: string;
@@ -10,10 +10,12 @@ export default class Match {
     this.maxUsers = maxUsers;
   }
 
-  addUser(user: User) {
-    if (this.users.length < this.maxUsers) {
-      this.users.push(user);
+  addUser(user: User): boolean {
+    if (this.users.length >= this.maxUsers) {
+      return false; 
     }
+    this.users.push(user);
+    return true;
   }
 
   userAmount() {

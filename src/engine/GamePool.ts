@@ -1,14 +1,13 @@
 import Match from './Match';
-import User from './User';
-import FinalsRequest from './game/thefinals/FinalsRequest';
+import User from '../models/User';
 
 export default class GamePool {
-  public id: String;
-  public name: String;
+  public id: string;
+  public name: string;
   public ranked: boolean; 
   public matches: Match[] = [];
 
-  constructor(name: String, ranked: boolean) {
+  constructor(name: string, ranked: boolean) {
     this.name = name;
     this.ranked = ranked;
     this.id = crypto.randomUUID();
@@ -17,21 +16,11 @@ export default class GamePool {
   addUser(user: User): Match {  
     let match = this.findOpenMatch();
     match.addUser(user);
-    if (match.userAmount() === match.maxUsers) {
-      console.log('Match is full');
-    } 
-
     return match;
   }
 
   findOpenMatch(): Match {
-    let foundMatch: Match | undefined;
-    this.matches.forEach((match) => { 
-      if (match.userAmount() < match.maxUsers) {
-        foundMatch = match;
-        return;
-      }
-    });
+    let foundMatch = this.matches.find(match => match.userAmount() < match.maxUsers);
 
     if(!foundMatch){
       foundMatch = new Match(3);

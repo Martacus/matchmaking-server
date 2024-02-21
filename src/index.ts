@@ -1,6 +1,6 @@
-import PoolManager from './models/PoolManager';
+import PoolManager from './engine/PoolManager';
 import FinalsRequest from './models/game/thefinals/FinalsRequest';
-import GamePool from './models/GamePool';
+import GamePool from './engine/GamePool';
 import { Server, Socket } from 'socket.io';
 
 import express from "express";
