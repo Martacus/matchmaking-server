@@ -18,7 +18,7 @@ export default class PoolManager {
     const poolName = matchRequest.ranked
       ? matchRequest.rank
       : `${matchRequest.rank}_${matchRequest.gamemode}`;
-
+      
     return this.pools.find(
       (pool) => pool.name === poolName && pool.ranked === matchRequest.ranked,
     );

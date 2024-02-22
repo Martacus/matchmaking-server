@@ -33,7 +33,7 @@ export default class GamePool {
       foundMatch = new Match(matchSize);
       this.matches.push(foundMatch);
     }
-
+    console.log(foundMatch)
     return foundMatch;
   }
 

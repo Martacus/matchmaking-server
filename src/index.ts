@@ -8,7 +8,7 @@ import { createServer } from 'node:http';
 import Match from './engine/Match';
 
 const ranks = ['bronze', 'silver', 'gold', 'platinum', 'diamond', 'all'];
-const gamemodes = ['quick_cash', 'bank_it', 'tournament'];
+const gamemodes = ['quick_cash', 'bank_it', 'tournament', 'any'];
 
 const PORT = process.env.PORT || 3000;
 const app = express();
