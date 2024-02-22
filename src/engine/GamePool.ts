@@ -1,5 +1,6 @@
 import Match from './Match';
 import User from '../models/User';
+import FinalsRequest from '../models/game/thefinals/FinalsRequest';
 
 export default class GamePool {
   public id: string;
@@ -14,20 +15,22 @@ export default class GamePool {
     this.id = crypto.randomUUID();
   }
 
-  addUser(user: User): Match {
-    let match = this.findOpenMatch();
+  addUser(user: FinalsRequest): Match {
+    let forUsers = user.duo ? 2: 1;
+    let match = this.findOpenMatch(forUsers);
     match.addUser(user);
     this.users.push(user);
     return match;
   }
 
-  findOpenMatch(): Match {
+  findOpenMatch(usersAmount: number): Match {
     let foundMatch = this.matches.find(
-      (match) => match.userAmount() < match.maxUsers,
+      (match) => match.maxUsers - match.userAmount() >= usersAmount,
     );
 
     if (!foundMatch) {
-      foundMatch = new Match(3);
+      const matchSize = usersAmount === 1 ? 3 : 2;
+      foundMatch = new Match(matchSize);
       this.matches.push(foundMatch);
     }
 
