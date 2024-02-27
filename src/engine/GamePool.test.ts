@@ -3,8 +3,6 @@ import GamePool from './GamePool';
 import User from '../models/User';
 import FinalsRequest from '../models/game/thefinals/FinalsRequest';
 
-
-
 test('Init GamePool', () => {
   const pool = new GamePool('test', true);
   expect(pool.name).toBe('test');

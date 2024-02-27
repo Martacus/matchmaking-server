@@ -1,10 +1,9 @@
 import GamePool from './GamePool';
-import FinalsRequest from '../models/game/thefinals/FinalsRequest';
-import User from '../models/User';
+import FinalsRequest from '../models/game/thefinals/FinalsRequest'; 
 
 export default class PoolManager {
   public game: string;
-  private pools: GamePool[] = [];
+  public pools: GamePool[] = [];
 
   constructor(game: string) {
     this.game = game;
