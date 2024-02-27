@@ -36,7 +36,7 @@ io.on('connection', (socket) => {
 
   socket.on('finalsMatchRequest', (data) => {
     console.log('Message received from client for match request:', socket.id);
-    const matchRequest = data.message as FinalsRequest;
+    const matchRequest = data.message as FinalsRequest; 
     handleFinalsRequest(matchRequest, socket);
   });
 
@@ -87,6 +87,7 @@ function handleFinalsRequest(matchRequest: FinalsRequest, socket: Socket) {
 
     broadCastMatchToPlayers(match, socket);
     if(match.userAmount() >= match.maxUsers){
+      match.close();
       //Close all connections on a timer
       setTimeout(() => {
         match.getUsers().forEach((user) => {
@@ -103,11 +104,14 @@ function handleFinalsRequest(matchRequest: FinalsRequest, socket: Socket) {
 }
 
 function broadCastMatchToPlayers(match: Match, socket: Socket){
+  if(match.closed) return;
   match.getUsers().forEach((user) => {
     if (user.socketId !== socket.id) {
       socket.broadcast.emit(user.socketId, match);
+      console.log('Emitted broadcast')
     } else {
       socket.emit(user.socketId, match);
+      console.log('emitted message to self')
     }
   });
 }

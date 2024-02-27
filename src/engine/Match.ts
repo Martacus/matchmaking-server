@@ -1,16 +1,18 @@
 import User from '../models/User';
+import FinalsRequest from '../models/game/thefinals/FinalsRequest';
 
 export default class Match {
   private id: string;
-  private users: User[] = [];
+  private users: FinalsRequest[] = [];
   public readonly maxUsers: number;
+  public closed: boolean = false;
 
   constructor(maxUsers: number) {
     this.id = crypto.randomUUID();
     this.maxUsers = maxUsers;
   }
 
-  addUser(user: User): boolean {
+  addUser(user: FinalsRequest): boolean {
     if (this.users.length >= this.maxUsers) {
       return false;
     }
@@ -32,5 +34,9 @@ export default class Match {
 
   removeUser(user: User) {
     this.users = this.users.filter((filterUser) => filterUser !== user);
+  }
+
+  close() {
+    this.closed = true;
   }
 }

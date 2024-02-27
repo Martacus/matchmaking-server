@@ -7,7 +7,7 @@ export default class GamePool {
   public name: string;
   public ranked: boolean;
   public matches: Match[] = [];
-  public users: User[] = [];
+  public users: FinalsRequest[] = [];
 
   constructor(name: string, ranked: boolean) {
     this.name = name;
@@ -33,7 +33,6 @@ export default class GamePool {
       foundMatch = new Match(matchSize);
       this.matches.push(foundMatch);
     }
-    console.log(foundMatch)
     return foundMatch;
   }
 
@@ -44,7 +43,7 @@ export default class GamePool {
     this.matches = this.matches.filter((m) => m !== match);
   }
 
-  removeUser(user: User): Match | undefined {
+  removeUser(user: FinalsRequest): Match | undefined {
     const match = this.matches.find((match) => match.getUsers().includes(user));
     this.users = this.users.filter((filterUser) => filterUser.socketId !== user.socketId);
     if(match){

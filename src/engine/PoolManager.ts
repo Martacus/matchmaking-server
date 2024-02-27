@@ -24,11 +24,11 @@ export default class PoolManager {
     );
   }
 
-  findPoolByUser(user: User): GamePool | undefined {
+  findPoolByUser(user: FinalsRequest): GamePool | undefined {
     return this.pools.find((pool) => pool.users.includes(user));
   }
 
-  findUserBySocketId(socketId: string): User | undefined {
+  findUserBySocketId(socketId: string): FinalsRequest | undefined {
     return this.pools
       .flatMap((pool) => pool.users)
       .find((user) => user.socketId === socketId);
