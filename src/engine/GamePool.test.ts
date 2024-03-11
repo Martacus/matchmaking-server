@@ -1,7 +1,7 @@
 import { expect, test } from 'bun:test';
 import GamePool from './GamePool';
-import User from '../models/User';
-import FinalsRequest from '../models/game/thefinals/FinalsRequest';
+import User from './models/User';
+import FinalsUser from '../thefinals/FinalsRequest';
 
 test('Init GamePool', () => {
   const pool = new GamePool('test', true);
@@ -12,15 +12,15 @@ test('Init GamePool', () => {
 
 test('should add a user to a non-existing match', () => {
   const pool = new GamePool('test', true);
-  pool.addUser(new FinalsRequest('test_name', 'test_discord_name', 'test_socket_id', '', '', false, false));
+  pool.addUser(new FinalsUser('test_name', 0, 'test_socket_id', '', '', false, false));
   expect(pool.matches.length).toBe(1);  
   expect(pool.matches[0].getUsers()[0].name).toBe('test_name');  
 });
 
 test('addUser adds a user to an existing match that is not full', () => {
   const gamePool = new GamePool('Test Pool', true);
-  const user1 = new FinalsRequest('test_name', 'test_discord_name', 'test_socket_id', '', '', false, false);  
-  const user2 = new FinalsRequest('test_name_2', 'test_discord_name_2', 'test_socket_id_2', '', '', false, false);  
+  const user1 = new FinalsUser('test_name', 0, 'test_socket_id', '', '', false, false);  
+  const user2 = new FinalsUser('test_name_2', 0, 'test_socket_id_2', '', '', false, false);  
 
   gamePool.addUser(user1);
   const match = gamePool.addUser(user2);
@@ -31,7 +31,7 @@ test('addUser adds a user to an existing match that is not full', () => {
 
 test('addUser creates a new match if existing matches are full', () => {
   const gamePool = new GamePool('Test Pool', true);
-  const user = new FinalsRequest('test_name', 'test_discord_name', 'test_socket_id', '', '', false, false); 
+  const user = new FinalsUser('test_name', 0, 'test_socket_id', '', '', false, false); 
 
   gamePool.addUser(user);
   gamePool.addUser(user);

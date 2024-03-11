@@ -1,13 +1,13 @@
 import Match from './Match';
-import User from '../models/User';
-import FinalsRequest from '../models/game/thefinals/FinalsRequest';
+import User from './models/User';
+import FinalsUser from '../thefinals/FinalsRequest';
 
 export default class GamePool {
   public id: string;
   public name: string;
   public ranked: boolean;
   public matches: Match[] = [];
-  public users: FinalsRequest[] = [];
+  public users: FinalsUser[] = [];
 
   constructor(name: string, ranked: boolean) {
     this.name = name;
@@ -15,7 +15,7 @@ export default class GamePool {
     this.id = crypto.randomUUID();
   }
 
-  addUser(user: FinalsRequest): Match {
+  addUser(user: FinalsUser): Match {
     let forUsers = user.duo ? 2: 1;
     let match = this.findOpenMatch(forUsers);
     match.addUser(user);
@@ -43,7 +43,7 @@ export default class GamePool {
     this.matches = this.matches.filter((m) => m !== match);
   }
 
-  removeUser(user: FinalsRequest): Match | undefined {
+  removeUser(user: FinalsUser): Match | undefined {
     const match = this.matches.find((match) => match.getUsers().includes(user));
     this.users = this.users.filter((filterUser) => filterUser.socketId !== user.socketId);
     if(match){

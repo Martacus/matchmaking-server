@@ -1,9 +1,9 @@
-import User from '../models/User';
-import FinalsRequest from '../models/game/thefinals/FinalsRequest';
+import User from './models/User';
+import FinalsUser from '../thefinals/FinalsRequest';
 
 export default class Match {
   private id: string;
-  private users: FinalsRequest[] = [];
+  private users: FinalsUser[] = [];
   public readonly maxUsers: number;
   public closed: boolean = false;
 
@@ -12,7 +12,7 @@ export default class Match {
     this.maxUsers = maxUsers;
   }
 
-  addUser(user: FinalsRequest): boolean {
+  addUser(user: FinalsUser): boolean {
     if (this.users.length >= this.maxUsers) {
       return false;
     }

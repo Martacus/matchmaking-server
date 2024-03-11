@@ -1,5 +1,5 @@
 import GamePool from './GamePool';
-import FinalsRequest from '../models/game/thefinals/FinalsRequest'; 
+import FinalsUser from '../thefinals/FinalsRequest'; 
 
 export default class PoolManager {
   public game: string;
@@ -13,7 +13,7 @@ export default class PoolManager {
     this.pools.push(pool);
   }
 
-  getPool(matchRequest: FinalsRequest): GamePool | undefined {
+  getPool(matchRequest: FinalsUser): GamePool | undefined {
     const poolName = matchRequest.ranked
       ? matchRequest.rank
       : `${matchRequest.rank}_${matchRequest.gamemode}`;
@@ -23,11 +23,11 @@ export default class PoolManager {
     );
   }
 
-  findPoolByUser(user: FinalsRequest): GamePool | undefined {
+  findPoolByUser(user: FinalsUser): GamePool | undefined {
     return this.pools.find((pool) => pool.users.includes(user));
   }
 
-  findUserBySocketId(socketId: string): FinalsRequest | undefined {
+  findUserBySocketId(socketId: string): FinalsUser | undefined {
     return this.pools
       .flatMap((pool) => pool.users)
       .find((user) => user.socketId === socketId);

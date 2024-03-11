@@ -1,7 +1,7 @@
 import { expect, test } from 'bun:test';
 import PoolManager from './PoolManager'; // Update the path as necessary
 import GamePool from './GamePool'; // Update the path as necessary
-import FinalsRequest from '../models/game/thefinals/FinalsRequest';
+import FinalsUser from '../thefinals/FinalsRequest';
 
 test('addPool successfully adds a GamePool', () => {
   const poolManager = new PoolManager('Test Game');
@@ -15,7 +15,7 @@ test('getPool returns the correct pool based on matchRequest', () => {
   const rankedPool = new GamePool('gold', true);
   poolManager.addPool(rankedPool);
   
-  const matchRequest = new FinalsRequest('test_name', 'gold', 'test_socket_id', 'gamemode', '', false, true);
+  const matchRequest = new FinalsUser('test_name', 'gold', 'test_socket_id', 'gamemode', '', false, true);
   rankedPool.addUser(matchRequest);
 
   const foundPool = poolManager.getPool(matchRequest);
@@ -28,7 +28,7 @@ test('getPool returns the correct pool based on matchRequest', () => {
 test('findPoolByUser returns the correct pool containing the user', () => {
   const poolManager = new PoolManager('Test Game');
   const pool = new GamePool('Casual', false);
-  const user = new FinalsRequest('test_name', 'test_discord_name', 'test_socket_id', '', 'casual', false, false);
+  const user = new FinalsUser('test_name', 'test_discord_name', 'test_socket_id', '', 'casual', false, false);
   pool.addUser(user);
   poolManager.addPool(pool);
 
@@ -40,7 +40,7 @@ test('findPoolByUser returns the correct pool containing the user', () => {
 test('findUserBySocketId returns the correct user', () => {
   const poolManager = new PoolManager('Test Game');
   const pool = new GamePool('gold', true);
-  const user = new FinalsRequest('test_name', 'gold', 'discord_name', 'test_socket_id', 'casual', false, true);
+  const user = new FinalsUser('test_name', 'gold', 'discord_name', 'test_socket_id', 'casual', false, true);
   poolManager.addPool(pool);
   pool.addUser(user);
 

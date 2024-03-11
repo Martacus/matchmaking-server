@@ -1,5 +1,5 @@
 import PoolManager from './engine/PoolManager';
-import FinalsRequest from './models/game/thefinals/FinalsRequest';
+import FinalsUser from './thefinals/FinalsRequest';
 import GamePool from './engine/GamePool';
 import { Server, Socket } from 'socket.io';
 
@@ -36,7 +36,7 @@ io.on('connection', (socket) => {
 
   socket.on('finalsMatchRequest', (data) => {
     console.log('Message received from client for match request:', socket.id);
-    const matchRequest = data.message as FinalsRequest; 
+    const matchRequest = data.message as FinalsUser; 
     handleFinalsRequest(matchRequest, socket);
   });
 
@@ -80,7 +80,7 @@ function createFinalsRankedPools() {
   });
 }
 
-function handleFinalsRequest(matchRequest: FinalsRequest, socket: Socket) {
+function handleFinalsRequest(matchRequest: FinalsUser, socket: Socket) {
   const pool = managers[0].getPool(matchRequest);
   if (pool) {
     let match = pool.addUser(matchRequest);

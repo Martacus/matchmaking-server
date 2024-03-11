@@ -1,14 +1,16 @@
-import User from '../../User';
+import User from '../engine/models/User';
 
-export default class FinalsRequest extends User {
-  rank: string;
+export default class FinalsUser extends User {
+  rank: number;
   gamemode: string;
   duo!: boolean;
-  ranked!: boolean;
+  lowRank!: number;
+  highRank!: number;
+  ranked!: boolean; 
 
   constructor(
     name: string,
-    rank: string,
+    rank: number,
     discordName: string,
     socketId: string,
     gamemode: string,
