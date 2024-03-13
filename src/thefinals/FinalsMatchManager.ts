@@ -17,9 +17,10 @@ export default class FinalsMatchManager extends MatchManager<FinalsUser> {
       match.addFilter(new FinalsModeFilter(user.gamemode));
     }
 
+    match.users.push(user);
+    this.userMatch.set(user.socketId, match);
     this.matches.push(match);
     return match;
   }
-  
   
 }

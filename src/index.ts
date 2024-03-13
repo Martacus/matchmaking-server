@@ -69,7 +69,7 @@ function handleRequest(game: string, matchRequest: FinalsUser, socket: Socket) {
 
   let match = manager.findMatch(matchRequest);
   if(!match){
-    manager.createMatch(matchRequest);
+    match = manager.createMatch(matchRequest);
   }
 
   // if (pool) {
