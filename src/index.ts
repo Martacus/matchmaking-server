@@ -47,6 +47,9 @@ function handleRequest(game: string, matchRequest: FinalsUser, socket: Socket) {
   let match = manager.findMatch(matchRequest);
   if(!match){
     match = manager.createMatch(matchRequest);
+  } else {
+    match.users.push(matchRequest);
+    manager.userMatch.set(socket.id, match);
   }
 
   broadCastMatchToPlayers(match, socket);
