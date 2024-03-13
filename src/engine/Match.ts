@@ -1,9 +1,9 @@
 import UserRequest from './models/User';
-import FinalsUser from '../thefinals/FinalsRequest';
+import FinalsUser from '../thefinals/FinalsUser';
 import MatchFilter from './filters/MatchFilter';
 
 export default abstract class Match<T extends UserRequest> {
-  private id: string;
+  public id: string;
   public users: FinalsUser[] = [];
   public readonly maxUsers: number;
   public closed: boolean = false;
@@ -20,14 +20,12 @@ export default abstract class Match<T extends UserRequest> {
     this.filters.forEach((filter) => {
       valid = valid && filter.validate(user);
     });
-    return true;
+    return valid;
   }
 
   addFilter(filter: MatchFilter<T>) {
     this.filters.push(filter);
   }
-
-  abstract createValidation(user: T): void;
 
   // //
 

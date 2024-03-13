@@ -1,15 +1,10 @@
 import MatchManager from './engine/MatchManager';
-import FinalsUser from './thefinals/FinalsRequest';
+import FinalsUser from './thefinals/FinalsUser';
 import { Server, Socket } from 'socket.io';
 
 import express from 'express';
 import { createServer } from 'node:http';
-import Match from './engine/Match';
-import UserRequest from './engine/models/User';
 import FinalsMatchManager from './thefinals/FinalsMatchManager';
-
-const ranks = ['bronze', 'silver', 'gold', 'platinum', 'diamond', 'all'];
-const gamemodes = ['quick_cash', 'bank_it', 'tournament', 'any'];
 
 const PORT = process.env.PORT || 3000;
 const app = express();

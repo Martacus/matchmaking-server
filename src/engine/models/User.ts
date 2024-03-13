@@ -1,10 +1,10 @@
 export default class UserRequest {
-  name: string;
+  socialName: string;
   discordName: string;
   socketId: string;
 
   constructor(name: string, discordName: string, socketId: string) {
-    this.name = name;
+    this.socialName = name;
     this.discordName = discordName;
     this.socketId = socketId;
   }

@@ -1,5 +1,5 @@
 import MatchFilter from "../../engine/filters/MatchFilter";
-import FinalsUser from "../FinalsRequest";
+import FinalsUser from "../FinalsUser";
 
 export default class FinalsModeFilter implements MatchFilter<FinalsUser> {
   id: string;

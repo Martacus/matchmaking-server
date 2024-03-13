@@ -1,5 +1,5 @@
 import MatchFilter from "../../engine/filters/MatchFilter";
-import FinalsUser from "../FinalsRequest";
+import FinalsUser from "../FinalsUser";
 
 export default class FinalsRankFilter implements MatchFilter<FinalsUser>{
   public id: string;

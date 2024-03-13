@@ -1,6 +1,6 @@
 import Match from "../../engine/Match";
 import MatchFilter from "../../engine/filters/MatchFilter";
-import FinalsUser from "../FinalsRequest";
+import FinalsUser from "../FinalsUser";
 
 export default class FinalsMaxUserFilter implements MatchFilter<FinalsUser>{
   id: string;

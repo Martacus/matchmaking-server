@@ -1,7 +1,7 @@
 import Match from "../engine/Match";
 import MatchManager from "../engine/MatchManager";
 import FinalsMatch from "./FinalsMatch";
-import FinalsUser from "./FinalsRequest";
+import FinalsUser from "./FinalsUser";
 import FinalsMaxUserFilter from "./filters/FinalsMaxUserFilter";
 import FinalsModeFilter from "./filters/FinalsModeFilter";
 import FinalsRankFilter from "./filters/FinalsRankFilter";
@@ -16,8 +16,6 @@ export default class FinalsMatchManager extends MatchManager<FinalsUser> {
     if(!user.ranked){
       match.addFilter(new FinalsModeFilter(user.gamemode));
     }
-
-
 
     return match;
   }
