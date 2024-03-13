@@ -3,7 +3,7 @@ import FinalsUser from '../thefinals/FinalsRequest';
 
 export default class Match {
   private id: string;
-  private users: FinalsUser[] = [];
+  public users: FinalsUser[] = [];
   public readonly maxUsers: number;
   public closed: boolean = false;
 
