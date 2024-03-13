@@ -27,6 +27,10 @@ export default abstract class Match<T extends UserRequest> {
     this.filters.push(filter);
   }
 
+  close() {
+    this.closed = true;
+  }
+
   // //
 
   // addUser(user: FinalsUser): boolean {
@@ -53,7 +57,5 @@ export default abstract class Match<T extends UserRequest> {
   //   this.users = this.users.filter((filterUser) => filterUser !== user);
   // }
 
-  // close() {
-  //   this.closed = true;
-  // }
+
 }

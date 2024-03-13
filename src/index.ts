@@ -5,6 +5,7 @@ import { Server, Socket } from 'socket.io';
 import express from 'express';
 import { createServer } from 'node:http';
 import FinalsMatchManager from './thefinals/FinalsMatchManager';
+import Match from './engine/Match';
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -30,36 +31,12 @@ io.on('connection', (socket) => {
   console.log(socket.id, ' connected');
 
   socket.on('finals', (data) => {
-    console.log('Message received from client for match request:', socket.id);
-    const matchRequest = data.message as FinalsUser; 
-    handleRequest('finals', matchRequest, socket);
+    console.log('Message received from client for match request:', socket.id); 
+    handleRequest('finals', data.message as FinalsUser, socket);
   });
 
-  socket.on('disconnect', (reason) => {
-    // const user = managers[0].findUserBySocketId(socket.id);
-    // if (!user) {
-    //   console.log(`ERROR: User with socket ID ${socket.id} not found.`);
-    //   return;
-    // }
-    
-    // const pool = managers[0].findPoolByUser(user);
-    // if (!pool) {
-    //   console.log(`ERROR: Pool for user ${user.name} not found.`);
-    //   return;
-    // } 
-
-    // const match = pool.removeUser(user);
-    // if (!match) {
-    //   console.log(`ERROR: Failed to remove user ${user.name} from match.`);
-    //   return;
-    // }
-
-    // if(match.userAmount() === 0){
-    //   pool.removeMatch(match);
-    //   return;
-    // }
-    
-    // broadCastMatchToPlayers(match, socket);
+  socket.on('disconnect', () => {
+    handleDisconnect(socket);
   });
 });
 
@@ -72,37 +49,55 @@ function handleRequest(game: string, matchRequest: FinalsUser, socket: Socket) {
     match = manager.createMatch(matchRequest);
   }
 
-  // if (pool) {
-  //   let match = pool.addUser(matchRequest);
-
-  //   broadCastMatchToPlayers(match, socket);
-  //   if(match.userAmount() >= match.maxUsers){
-  //     match.close();
-  //     //Close all connections on a timer
-  //     setTimeout(() => {
-  //       match.getUsers().forEach((user) => {
-  //         const userSocket = io.sockets.sockets.get(user.socketId);
-  //         if(userSocket){
-  //           userSocket.disconnect(true);
-  //         }
-  //       });
-  //       //Remove match from pool
-  //       pool.removeMatch(match);
-  //     }, 5000);
-  //   }
-  // }
+  broadCastMatchToPlayers(match, socket);
+  handleFullMatch(match, manager);
 }
 
-// function broadCastMatchToPlayers(match: Match, socket: Socket){
-//   if(match.closed) return;
-//   match.getUsers().forEach((user) => {
-//     if (user.socketId !== socket.id) {
-//       socket.broadcast.emit(user.socketId, match);
-//       console.log('Emitted broadcast')
-//     } else {
-//       socket.emit(user.socketId, match);
-//       console.log('emitted message to self')
-//     }
-//   });
-// }
+function broadCastMatchToPlayers(match: Match<any>, socket: Socket){
+  if(match.closed) return;
+  match.users.forEach((user) => {
+    if (user.socketId !== socket.id) {
+      socket.broadcast.emit(user.socketId, match);
+      console.log('Emitted broadcast')
+    } else {
+      socket.emit(user.socketId, match);
+      console.log('emitted message to self')
+    }
+  });
+}
+
+function handleFullMatch(match: Match<any>, manager: MatchManager<any>){
+  if(match.users.length >= match.maxUsers){
+    match.close(); 
+    setTimeout(() => {
+      match?.users.forEach((user) => {
+        const userSocket = io.sockets.sockets.get(user.socketId);
+        if(userSocket){
+          userSocket.disconnect(true);
+        }
+      }); 
+      manager.removeMatch(match);
+    }, 5000);
+  }
+}
+
+function handleDisconnect(socket: Socket) {
+  const managerEntry = Array.from(managers.entries()).find(([key, value]) => { 
+    if(value.userMatch.has(socket.id)){
+      return value;
+    }
+  });
+  if(!managerEntry) return;
+  const manager = managerEntry[1];
+  manager.removeUser(socket.id);
+
+  const match = manager.userMatch.get(socket.id);
+  if(!match) return;
+  if(match.users.length === 0){
+    manager.removeMatch(match);
+    return;
+  }
+  
+  broadCastMatchToPlayers(match, socket);
+}
 
