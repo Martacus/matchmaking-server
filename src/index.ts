@@ -1,6 +1,5 @@
 import MatchManager from './engine/MatchManager';
 import FinalsUser from './thefinals/FinalsRequest';
-import GamePool from './engine/GamePool';
 import { Server, Socket } from 'socket.io';
 
 import express from 'express';
