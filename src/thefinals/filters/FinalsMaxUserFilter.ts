@@ -5,9 +5,9 @@ import FinalsUser from "../FinalsRequest";
 export default class FinalsMaxUserFilter implements MatchFilter<FinalsUser>{
   id: string;
   maxUsers: number;
-  match: Match;
+  match: Match<FinalsUser>;
 
-  constructor(maxUsers: number, match: Match) {
+  constructor(maxUsers: number, match: Match<FinalsUser>) {
     this.id = 'max_user_filter';
     this.maxUsers = maxUsers;
     this.match = match;

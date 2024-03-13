@@ -1,4 +1,4 @@
-export default class User {
+export default class UserRequest {
   name: string;
   discordName: string;
   socketId: string;

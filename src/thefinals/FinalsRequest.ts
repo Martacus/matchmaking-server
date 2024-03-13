@@ -1,6 +1,6 @@
-import User from '../engine/models/User';
+import UserRequest from '../engine/models/User';
 
-export default class FinalsUser extends User {
+export default class FinalsUser extends UserRequest {
   rank: number;
   gamemode: string;
   duo!: boolean;

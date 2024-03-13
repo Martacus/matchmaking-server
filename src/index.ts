@@ -1,4 +1,4 @@
-import PoolManager from './engine/PoolManager';
+import MatchManager from './engine/MatchManager';
 import FinalsUser from './thefinals/FinalsRequest';
 import GamePool from './engine/GamePool';
 import { Server, Socket } from 'socket.io';
@@ -6,6 +6,8 @@ import { Server, Socket } from 'socket.io';
 import express from 'express';
 import { createServer } from 'node:http';
 import Match from './engine/Match';
+import UserRequest from './engine/models/User';
+import FinalsMatchManager from './thefinals/FinalsMatchManager';
 
 const ranks = ['bronze', 'silver', 'gold', 'platinum', 'diamond', 'all'];
 const gamemodes = ['quick_cash', 'bank_it', 'tournament', 'any'];
@@ -23,9 +25,8 @@ const io = new Server(server, {
   pingTimeout: 5000,
 });
 
-let managers: PoolManager[] = [];
-managers.push(new PoolManager('thefinals'));
-createFinalsRankedPools();
+let managers = new Map<string, MatchManager<any>>();
+managers.set('finals', new FinalsMatchManager());  
 
 server.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
@@ -34,85 +35,80 @@ server.listen(PORT, () => {
 io.on('connection', (socket) => {
   console.log(socket.id, ' connected');
 
-  socket.on('finalsMatchRequest', (data) => {
+  socket.on('finals', (data) => {
     console.log('Message received from client for match request:', socket.id);
     const matchRequest = data.message as FinalsUser; 
-    handleFinalsRequest(matchRequest, socket);
+    handleRequest('finals', matchRequest, socket);
   });
 
   socket.on('disconnect', (reason) => {
-    const user = managers[0].findUserBySocketId(socket.id);
-    if (!user) {
-      console.log(`ERROR: User with socket ID ${socket.id} not found.`);
-      return;
-    }
+    // const user = managers[0].findUserBySocketId(socket.id);
+    // if (!user) {
+    //   console.log(`ERROR: User with socket ID ${socket.id} not found.`);
+    //   return;
+    // }
     
-    const pool = managers[0].findPoolByUser(user);
-    if (!pool) {
-      console.log(`ERROR: Pool for user ${user.name} not found.`);
-      return;
-    } 
+    // const pool = managers[0].findPoolByUser(user);
+    // if (!pool) {
+    //   console.log(`ERROR: Pool for user ${user.name} not found.`);
+    //   return;
+    // } 
 
-    const match = pool.removeUser(user);
-    if (!match) {
-      console.log(`ERROR: Failed to remove user ${user.name} from match.`);
-      return;
-    }
+    // const match = pool.removeUser(user);
+    // if (!match) {
+    //   console.log(`ERROR: Failed to remove user ${user.name} from match.`);
+    //   return;
+    // }
 
-    if(match.userAmount() === 0){
-      pool.removeMatch(match);
-      return;
-    }
+    // if(match.userAmount() === 0){
+    //   pool.removeMatch(match);
+    //   return;
+    // }
     
-    broadCastMatchToPlayers(match, socket);
+    // broadCastMatchToPlayers(match, socket);
   });
 });
 
-function createFinalsRankedPools() {
-  ranks.forEach((rank) => {
-    managers[0].addPool(new GamePool(rank, true));
-  });
+function handleRequest(game: string, matchRequest: FinalsUser, socket: Socket) {
+  const manager = managers.get(game);
+  if(!manager) return;
 
-  ranks.forEach((rank) => {
-    gamemodes.forEach((gamemode) => {
-      managers[0].addPool(new GamePool(rank + '_' + gamemode, false));
-    });
-  });
-}
-
-function handleFinalsRequest(matchRequest: FinalsUser, socket: Socket) {
-  const pool = managers[0].getPool(matchRequest);
-  if (pool) {
-    let match = pool.addUser(matchRequest);
-
-    broadCastMatchToPlayers(match, socket);
-    if(match.userAmount() >= match.maxUsers){
-      match.close();
-      //Close all connections on a timer
-      setTimeout(() => {
-        match.getUsers().forEach((user) => {
-          const userSocket = io.sockets.sockets.get(user.socketId);
-          if(userSocket){
-            userSocket.disconnect(true);
-          }
-        });
-        //Remove match from pool
-        pool.removeMatch(match);
-      }, 5000);
-    }
+  let match = manager.findMatch(matchRequest);
+  if(!match){
+    manager.createMatch(matchRequest);
   }
+
+  // if (pool) {
+  //   let match = pool.addUser(matchRequest);
+
+  //   broadCastMatchToPlayers(match, socket);
+  //   if(match.userAmount() >= match.maxUsers){
+  //     match.close();
+  //     //Close all connections on a timer
+  //     setTimeout(() => {
+  //       match.getUsers().forEach((user) => {
+  //         const userSocket = io.sockets.sockets.get(user.socketId);
+  //         if(userSocket){
+  //           userSocket.disconnect(true);
+  //         }
+  //       });
+  //       //Remove match from pool
+  //       pool.removeMatch(match);
+  //     }, 5000);
+  //   }
+  // }
 }
 
-function broadCastMatchToPlayers(match: Match, socket: Socket){
-  if(match.closed) return;
-  match.getUsers().forEach((user) => {
-    if (user.socketId !== socket.id) {
-      socket.broadcast.emit(user.socketId, match);
-      console.log('Emitted broadcast')
-    } else {
-      socket.emit(user.socketId, match);
-      console.log('emitted message to self')
-    }
-  });
-}
+// function broadCastMatchToPlayers(match: Match, socket: Socket){
+//   if(match.closed) return;
+//   match.getUsers().forEach((user) => {
+//     if (user.socketId !== socket.id) {
+//       socket.broadcast.emit(user.socketId, match);
+//       console.log('Emitted broadcast')
+//     } else {
+//       socket.emit(user.socketId, match);
+//       console.log('emitted message to self')
+//     }
+//   });
+// }
 
