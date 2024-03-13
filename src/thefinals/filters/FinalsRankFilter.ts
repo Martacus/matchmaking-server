@@ -1,7 +1,7 @@
 import MatchFilter from "../../engine/filters/MatchFilter";
 import FinalsUser from "../FinalsUser";
 
-export default class FinalsRankFilter implements MatchFilter<FinalsUser>{
+export class FinalsRankFilter implements MatchFilter<FinalsUser>{
   public id: string;
   public lowerBound: number;
   public upperBound: number;

@@ -1,7 +1,7 @@
 import { beforeEach, expect, test } from 'bun:test';
-
-import FinalsModeFilter from './FinalsModeFilter'; 
+ 
 import FinalsUser from '../FinalsUser';
+import { FinalsModeFilter } from './FinalsModeFilter';
 
 let filter: FinalsModeFilter;
 

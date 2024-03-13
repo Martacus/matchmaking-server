@@ -1,10 +1,8 @@
 import Match from "../engine/Match";
 import MatchManager from "../engine/MatchManager";
 import FinalsMatch from "./FinalsMatch";
-import FinalsUser from "./FinalsUser";
-import FinalsMaxUserFilter from "./filters/FinalsMaxUserFilter";
-import FinalsModeFilter from "./filters/FinalsModeFilter";
-import FinalsRankFilter from "./filters/FinalsRankFilter";
+import FinalsUser from "./FinalsUser"; 
+import { FinalsMaxUserFilter, FinalsModeFilter, FinalsRankFilter } from "./filters";
 
 export default class FinalsMatchManager extends MatchManager<FinalsUser> {
   

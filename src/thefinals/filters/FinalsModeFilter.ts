@@ -1,7 +1,7 @@
 import MatchFilter from "../../engine/filters/MatchFilter";
 import FinalsUser from "../FinalsUser";
 
-export default class FinalsModeFilter implements MatchFilter<FinalsUser> {
+export class FinalsModeFilter implements MatchFilter<FinalsUser> {
   id: string;
   gamemode: string;
 

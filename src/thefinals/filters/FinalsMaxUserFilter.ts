@@ -2,7 +2,7 @@ import Match from "../../engine/Match";
 import MatchFilter from "../../engine/filters/MatchFilter";
 import FinalsUser from "../FinalsUser";
 
-export default class FinalsMaxUserFilter implements MatchFilter<FinalsUser>{
+export class FinalsMaxUserFilter implements MatchFilter<FinalsUser>{
   id: string;
   maxUsers: number;
   match: Match<FinalsUser>;

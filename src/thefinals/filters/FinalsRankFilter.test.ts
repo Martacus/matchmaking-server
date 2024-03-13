@@ -1,7 +1,7 @@
 import { beforeEach, expect, test } from 'bun:test';
-
-import FinalsRankFilter from './FinalsRankFilter'; 
+ 
 import FinalsUser from '../FinalsUser';
+import { FinalsRankFilter } from './FinalsRankFilter';
 
 let filter: FinalsRankFilter;
 

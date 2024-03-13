@@ -1,9 +1,9 @@
 import { beforeEach, expect, test } from 'bun:test';
-
-import FinalsMaxUserFilter from './FinalsMaxUserFilter'; 
+ 
 import Match from '../../engine/Match';
 import FinalsUser from '../FinalsUser';
 import FinalsMatch from '../FinalsMatch';
+import { FinalsMaxUserFilter } from './FinalsMaxUserFilter';
 
 let filter: FinalsMaxUserFilter;
 let match: Match<FinalsUser>;
