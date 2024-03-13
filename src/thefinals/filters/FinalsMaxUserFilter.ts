@@ -14,16 +14,7 @@ export class FinalsMaxUserFilter implements MatchFilter<FinalsUser>{
   }
 
   validate(user: FinalsUser): boolean {
-    if(user.duo){
-      if(this.match.users.length + 2 <= this.maxUsers){
-        return true;
-      }
-    } else {
-      if(this.match.users.length + 1 <= this.maxUsers){
-        return true;
-      }
-    }
-
-    return false;
+    const increment = user.duo ? 2 : 1;
+    return this.match.users.length + increment <= this.maxUsers;
   }
 }

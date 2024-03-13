@@ -16,11 +16,7 @@ export default abstract class Match<T extends UserRequest> {
   }
 
   validate(user: T): boolean {
-    let valid = true;
-    this.filters.forEach((filter) => {
-      valid = valid && filter.validate(user);
-    });
-    return valid;
+    return this.filters.every(filter => filter.validate(user));
   }
 
   addFilter(filter: MatchFilter<T>) {
@@ -30,32 +26,5 @@ export default abstract class Match<T extends UserRequest> {
   close() {
     this.closed = true;
   }
-
-  // //
-
-  // addUser(user: FinalsUser): boolean {
-  //   if (this.users.length >= this.maxUsers) {
-  //     return false;
-  //   }
-  //   this.users.push(user);
-  //   return true;
-  // }
-
-  // userAmount() {
-  //   return this.users.length;
-  // }
-
-  // getId() {
-  //   return this.id;
-  // }
-
-  // getUsers() {
-  //   return this.users;
-  // }
-
-  // removeUser(user: UserRequest) {
-  //   this.users = this.users.filter((filterUser) => filterUser !== user);
-  // }
-
 
 }

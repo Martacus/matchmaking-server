@@ -1,7 +1,7 @@
 import Match from './Match';
 import UserRequest from './models/User';
 
-export default abstract class MatchManager<T extends UserRequest> { 
+export default abstract class MatchManager<T extends UserRequest> {
   public matches: Match<T>[] = [];
   public userMatch: Map<string, Match<T>> = new Map();
 
@@ -10,13 +10,16 @@ export default abstract class MatchManager<T extends UserRequest> {
   }
 
   removeMatch(match: Match<T>) {
+    const matchIndex = this.matches.indexOf(match);
+    if (matchIndex !== -1) {
+      this.matches.splice(matchIndex, 1);
+    }
     match.users.forEach((user) => this.userMatch.delete(user.socketId));
-    this.matches = this.matches.filter((matchItem) => matchItem !== match);
   }
 
   removeUser(socketId: string) {
     const match = this.userMatch.get(socketId);
-    if(!match) return;
+    if (!match) return;
     match.users = match.users.filter((user) => user.socketId !== socketId);
     this.userMatch.delete(socketId);
   }
