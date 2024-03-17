@@ -24,7 +24,7 @@ let managers = new Map<string, MatchManager<any>>();
 managers.set('finals', new FinalsMatchManager());  
 
 server.listen(PORT, () => {
-  console.log(`server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
 
 io.on('connection', (socket) => {
@@ -40,7 +40,7 @@ io.on('connection', (socket) => {
   });
 });
 
-function handleRequest(game: string, matchRequest: FinalsUser, socket: Socket) {
+function handleRequest(game: string, matchRequest: FinalsUser, socket: Socket) { 
   const manager = managers.get(game);
   if(!manager) return;
 
@@ -60,11 +60,9 @@ function broadCastMatchToPlayers(match: Match<any>, socket: Socket){
   if(match.closed) return;
   match.users.forEach((user) => {
     if (user.socketId !== socket.id) {
-      socket.broadcast.emit(user.socketId, match);
-      console.log('Emitted broadcast')
+      socket.broadcast.emit(user.socketId, match); 
     } else {
-      socket.emit(user.socketId, match);
-      console.log('emitted message to self')
+      socket.emit(user.socketId, match); 
     }
   });
 }

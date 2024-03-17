@@ -7,10 +7,15 @@ import { FinalsMaxUserFilter, FinalsModeFilter, FinalsRankFilter } from "./filte
 export default class FinalsMatchManager extends MatchManager<FinalsUser> {
   
   createMatch(user: FinalsUser): Match<FinalsUser> {
-    const match = new FinalsMatch(3);
+    let maxUsers: number = 3;
+    if(user.duo){
+      maxUsers = 2;
+    }
+    let match = new FinalsMatch(maxUsers);
+    
 
     match.addFilter(new FinalsRankFilter(user.lowRank, user.highRank));
-    match.addFilter(new FinalsMaxUserFilter(3));
+    match.addFilter(new FinalsMaxUserFilter(maxUsers));
     if(!user.ranked){
       match.addFilter(new FinalsModeFilter(user.gamemode));
     }
