@@ -1,3 +1,4 @@
+import Match from "../../engine/Match";
 import MatchFilter from "../../engine/filters/MatchFilter";
 import FinalsUser from "../FinalsUser";
 
@@ -10,7 +11,7 @@ export class FinalsModeFilter implements MatchFilter<FinalsUser> {
     this.gamemode = gamemode;
   }
 
-  validate(user: FinalsUser): boolean {
+  validate(user: FinalsUser, match: Match<FinalsUser>): boolean {
     return user.gamemode === 'all' || user.gamemode === this.gamemode;
   }
 }

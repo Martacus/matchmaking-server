@@ -10,7 +10,7 @@ export default class FinalsMatchManager extends MatchManager<FinalsUser> {
     const match = new FinalsMatch(3);
 
     match.addFilter(new FinalsRankFilter(user.lowRank, user.highRank));
-    match.addFilter(new FinalsMaxUserFilter(3, match));
+    match.addFilter(new FinalsMaxUserFilter(3));
     if(!user.ranked){
       match.addFilter(new FinalsModeFilter(user.gamemode));
     }

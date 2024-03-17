@@ -1,4 +1,6 @@
+import Match from "../../engine/Match";
 import MatchFilter from "../../engine/filters/MatchFilter";
+import FinalsMatch from "../FinalsMatch";
 import FinalsUser from "../FinalsUser";
 
 export class FinalsRankFilter implements MatchFilter<FinalsUser>{
@@ -12,8 +14,16 @@ export class FinalsRankFilter implements MatchFilter<FinalsUser>{
     this.upperBound = upperBound;
   } 
 
-  validate(user: FinalsUser): boolean {
-    return (user.rank >= this.lowerBound && user.rank <= this.upperBound);
+  validate(user: FinalsUser, match: Match<FinalsUser>): boolean {
+    if (
+      user.rank < this.lowerBound ||
+      user.rank > this.upperBound ||
+      match.users.some(u => u.rank < user.lowRank || u.rank > user.highRank)
+    ) {
+      return false;
+    }
+    
+    return true;
   }
 
 }

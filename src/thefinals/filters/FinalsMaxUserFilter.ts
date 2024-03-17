@@ -4,17 +4,15 @@ import FinalsUser from "../FinalsUser";
 
 export class FinalsMaxUserFilter implements MatchFilter<FinalsUser>{
   id: string;
-  maxUsers: number;
-  match: Match<FinalsUser>;
+  maxUsers: number; 
 
-  constructor(maxUsers: number, match: Match<FinalsUser>) {
+  constructor(maxUsers: number) {
     this.id = 'max_user_filter';
-    this.maxUsers = maxUsers;
-    this.match = match;
+    this.maxUsers = maxUsers; 
   }
 
-  validate(user: FinalsUser): boolean {
+  validate(user: FinalsUser, match: Match<FinalsUser>): boolean {
     const increment = user.duo ? 2 : 1;
-    return this.match.users.length + increment <= this.maxUsers;
-  }
+    return match.users.length + increment <= this.maxUsers;
+  } 
 }

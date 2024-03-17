@@ -16,7 +16,7 @@ export default abstract class Match<T extends UserRequest> {
   }
 
   validate(user: T): boolean {
-    return this.filters.every(filter => filter.validate(user));
+    return this.filters.every(filter => filter.validate(user, this));
   }
 
   addFilter(filter: MatchFilter<T>) {
