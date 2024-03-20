@@ -32,7 +32,7 @@ io.on('connection', (socket) => {
 
   socket.on('finals', (data) => {
     console.log('Message received from client for match request:', socket.id); 
-    handleRequest('finals', data.message as FinalsUser, socket);
+    handleFinalsRequest('finals', data.message as FinalsUser, socket);
   });
 
   socket.on('disconnect', () => {
@@ -40,7 +40,7 @@ io.on('connection', (socket) => {
   });
 });
 
-function handleRequest(game: string, matchRequest: FinalsUser, socket: Socket) { 
+function handleFinalsRequest(game: string, matchRequest: FinalsUser, socket: Socket) { 
   const manager = managers.get(game);
   if(!manager) return;
 
@@ -50,6 +50,9 @@ function handleRequest(game: string, matchRequest: FinalsUser, socket: Socket) {
   } else {
     match.users.push(matchRequest);
     manager.userMatch.set(socket.id, match);
+    if(matchRequest.duo){
+      match.maxUsers = match.maxUsers -1;
+    }
   }
 
   broadCastMatchToPlayers(match, socket);
@@ -83,6 +86,7 @@ function handleFullMatch(match: Match<any>, manager: MatchManager<any>){
 }
 
 function handleDisconnect(socket: Socket) {
+  console.log("LOG: handleDisconnect -> socket.id", socket.id)
   const managerEntry = Array.from(managers.entries()).find(([key, value]) => { 
     if(value.userMatch.has(socket.id)){
       return value;
@@ -90,14 +94,16 @@ function handleDisconnect(socket: Socket) {
   });
   if(!managerEntry) return;
   const manager = managerEntry[1];
-  manager.removeUser(socket.id);
-
   const match = manager.userMatch.get(socket.id);
+  const user = match?.getUser(socket.id);
+
+  console.log("LOG: remove user from manager & match");	
+  manager.removeUser(socket.id); 
   if(!match) return;
   if(match.users.length === 0){
     manager.removeMatch(match);
     return;
-  }
+  } 
   
   broadCastMatchToPlayers(match, socket);
 }

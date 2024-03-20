@@ -1,11 +1,10 @@
-import UserRequest from './models/User';
-import FinalsUser from '../thefinals/FinalsUser';
+import UserRequest from './models/User'; 
 import MatchFilter from './filters/MatchFilter';
 
 export default abstract class Match<T extends UserRequest> {
   public id: string;
-  public users: FinalsUser[] = [];
-  public readonly maxUsers: number;
+  public users: T[] = [];
+  public maxUsers: number;
   public closed: boolean = false;
 
   public filters: MatchFilter<T>[] = [];
@@ -13,6 +12,10 @@ export default abstract class Match<T extends UserRequest> {
   constructor(maxUsers: number) {
     this.id = crypto.randomUUID();
     this.maxUsers = maxUsers;
+  }
+
+  getUser(socketId: string): T | undefined {
+    return this.users.find(user => user.socketId === socketId);
   }
 
   validate(user: T): boolean {

@@ -12,6 +12,6 @@ export class FinalsModeFilter implements MatchFilter<FinalsUser> {
   }
 
   validate(user: FinalsUser, match: Match<FinalsUser>): boolean {
-    return user.gamemode === 'all' || user.gamemode === this.gamemode;
+    return user.gamemode === 'any' || user.gamemode === this.gamemode;
   }
 }
