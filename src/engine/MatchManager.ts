@@ -24,6 +24,11 @@ export default abstract class MatchManager<T extends UserRequest> {
     this.userMatch.delete(socketId);
   }
 
+  addUser(user: T, match: Match<T>): void {
+    match.users.push(user);
+    this.userMatch.set(user.socketId, match);
+  }
+
   abstract createMatch(user: T): Match<T>;
 
 }

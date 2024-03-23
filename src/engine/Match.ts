@@ -1,7 +1,7 @@
 import UserRequest from './models/User'; 
 import MatchFilter from './filters/MatchFilter';
 
-export default abstract class Match<T extends UserRequest> {
+export default class Match<T extends UserRequest> {
   public id: string;
   public users: T[] = [];
   public maxUsers: number;

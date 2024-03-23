@@ -6,6 +6,8 @@ import express from 'express';
 import { createServer } from 'node:http';
 import FinalsMatchManager from './thefinals/FinalsMatchManager';
 import Match from './engine/Match';
+import HelldiverMatchManager from './helldivers/HelldiverMatchManager';
+import User from './engine/models/User';
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -21,7 +23,8 @@ const io = new Server(server, {
 });
 
 let managers = new Map<string, MatchManager<any>>();
-managers.set('finals', new FinalsMatchManager());  
+managers.set('finals', new FinalsMatchManager());
+managers.set('helldivers', new HelldiverMatchManager());  
 
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
@@ -31,8 +34,8 @@ io.on('connection', (socket) => {
   console.log(socket.id, ' connected');
 
   socket.on('finals', (data) => {
-    console.log('Message received from client for match request:', socket.id); 
-    handleFinalsRequest('finals', data.message as FinalsUser, socket);
+    console.log('LOG: Message received from client for match request:', socket.id); 
+    handleRequest('finals', data.message as FinalsUser, socket);
   });
 
   socket.on('disconnect', () => {
@@ -40,7 +43,7 @@ io.on('connection', (socket) => {
   });
 });
 
-function handleFinalsRequest(game: string, matchRequest: FinalsUser, socket: Socket) { 
+function handleRequest(game: string, matchRequest: User, socket: Socket) { 
   const manager = managers.get(game);
   if(!manager) return;
 
@@ -48,11 +51,7 @@ function handleFinalsRequest(game: string, matchRequest: FinalsUser, socket: Soc
   if(!match){
     match = manager.createMatch(matchRequest);
   } else {
-    match.users.push(matchRequest);
-    manager.userMatch.set(socket.id, match);
-    if(matchRequest.duo){
-      match.maxUsers = match.maxUsers -1;
-    }
+    manager.addUser(matchRequest, match);
   }
 
   broadCastMatchToPlayers(match, socket);
