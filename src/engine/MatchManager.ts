@@ -25,8 +25,10 @@ export default abstract class MatchManager<T extends UserRequest> {
   }
 
   addUser(user: T, match: Match<T>): void {
-    match.users.push(user);
-    this.userMatch.set(user.socketId, match);
+    if (!match.closed && match.users.length < match.maxUsers) {
+      match.users.push(user);
+      this.userMatch.set(user.socketId, match);
+    }
   }
 
   abstract createMatch(user: T): Match<T>;

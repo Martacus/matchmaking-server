@@ -1,6 +1,5 @@
 import Match from "../../engine/Match";
 import MatchFilter from "../../engine/filters/MatchFilter";
-import FinalsMatch from "../FinalsMatch";
 import FinalsUser from "../FinalsUser";
 
 export class FinalsRankFilter implements MatchFilter<FinalsUser>{

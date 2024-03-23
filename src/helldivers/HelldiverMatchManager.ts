@@ -17,6 +17,7 @@ export default class HelldiverMatchManager extends MatchManager<HelldiverUser> {
     let match = new Match<HelldiverUser>(4);
     //todo: Add filters
     this.addUser(user, match);
+    this.matches.push(match);
     return match;
   }
 

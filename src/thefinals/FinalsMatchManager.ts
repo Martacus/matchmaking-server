@@ -21,7 +21,8 @@ export default class FinalsMatchManager extends MatchManager<FinalsUser> {
     if(!user.ranked){
       match.addFilter(new FinalsModeFilter(user.gamemode));
     }
-    
+
+    this.matches.push(match);
     return match;
   }
   
