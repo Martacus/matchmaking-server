@@ -34,7 +34,12 @@ io.on('connection', (socket) => {
   console.log(socket.id, ' connected');
 
   socket.on('finals', (data) => {
-    console.log('LOG: Message received from client for match request:', socket.id); 
+    console.log('LOG: Message received from client for finals match:', socket.id); 
+    handleRequest('finals', data.message as FinalsUser, socket);
+  });
+
+  socket.on('helldivers', (data) => {
+    console.log('LOG: Message received from client for helldiver match:', socket.id); 
     handleRequest('finals', data.message as FinalsUser, socket);
   });
 

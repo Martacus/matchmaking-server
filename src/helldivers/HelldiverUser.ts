@@ -6,9 +6,11 @@ export default class HelldiverUser extends UserRequest{
   isTrio: boolean = false;
   world: string = '';
   enemy: string = '';
+  levelLowerBound: number = 1;
+  levelUpperBound: number = 50;
 
   constructor(name: string, discordName: string, socketId: string) {
     super(name, discordName, socketId);
   }
-  
+
 }
